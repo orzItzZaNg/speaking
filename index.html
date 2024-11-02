@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Của thk ZANG VŨ ok</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f4;
+            flex-direction: column;
+        }
+        #top-dot {
+            width: 10px;
+            height: 10px;
+            background-color: red;
+            border-radius: 50%;
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        #scroll-container {
+            width: 100%; /* Chiều rộng vùng chứa */
+            height: 100%; /* Chiều cao vùng chứa */
+            overflow: hidden;
+            white-space: nowrap;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            display: none; /* Ẩn vùng chứa văn bản */
+        }
+        #scrolling-text {
+            display: inline-block;
+            font-size: 20px;
+            white-space: nowrap;
+            transform: translate(0, 0);
+        }
+        #input-container {
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div id="top-dot"></div>
+    <div id="scroll-container">
+        <div id="scrolling-text">
+            <!-- Văn bản sẽ được thay thế tại đây -->
+        </div>
+    </div>
+
+    <div id="input-container">
+        <h2>Nhập đoạn văn của bạn</h2>
+        <textarea id="user-input" rows="5" cols="50" placeholder="Nhập đoạn văn ở đây..."></textarea>
+        <button id="submit-btn">Gửi</button>
+    </div>
+
+    <script>
+        // Chức năng cuộn văn bản
+        function startScrolling(text) {
+            const scrollingText = document.getElementById('scrolling-text');
+            scrollingText.textContent = text; // Thay đổi văn bản cuộn
+
+            let scrollX = 0;
+            let scrollY = 0;
+
+            document.addEventListener('keydown', (event) => {
+                const textRect = scrollingText.getBoundingClientRect();
+                const containerWidth = window.innerWidth;
+                const containerHeight = window.innerHeight;
+
+                if (event.key === 'ArrowRight' && textRect.right > 20) {
+                    scrollX -= 25; // Di chuyển sang trái
+                } else if (event.key === 'ArrowLeft' && textRect.left < containerWidth - 20) {
+                    scrollX += 25; // Di chuyển sang phải
+                } else if (event.key === 'ArrowUp' && textRect.top > 0) {
+                    scrollY -= 25; // Di chuyển lên
+                } else if (event.key === 'ArrowDown' && textRect.bottom < containerHeight) {
+                    scrollY += 25; // Di chuyển xuống
+                }
+                scrollingText.style.transform = translate(${scrollX}px, ${scrollY}px);
+            });
+        }
+
+        // Xử lý gửi văn bản
+        document.getElementById('submit-btn').addEventListener('click', () => {
+            const userInput = document.getElementById('user-input').value;
+            startScrolling(userInput); // Gọi chức năng cuộn với văn bản người dùng đã nhập
+            document.getElementById('scroll-container').style.display = 'flex'; // Hiển thị vùng chứa văn bản
+            document.getElementById('input-container').style.display = 'none'; // Ẩn container nhập văn bản
+        });
+
+        // Hiển thị vùng nhập văn bản
+        document.getElementById('input-container').style.display = 'flex';
+    </script>
+</body>
+             
